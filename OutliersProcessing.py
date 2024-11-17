@@ -30,23 +30,27 @@ def getOutliers(data, features):
 # Return a new set of data with outliers removed
 def removeOutliers(data, features):
   removeIdx = pd.Series([False] * len(data))
-  for i, feature in enumerate(features):
+  for feature in features:
     min, max = findMinMax(data[feature])
     outliers_lower = data[feature] < min
     outliers_upper = data[feature] > max
     
     removeIdx = removeIdx | outliers_lower | outliers_upper
 
-  return newData.loc[~removeIdx]
+  return data.loc[~removeIdx]
   
 
 
 # Testing code
-data = pd.DataFrame(pd.read_csv('./SeoulBikeData.csv'))
-features = ['Rented Bike Count', 'Wind speed (m/s)']
+# data = pd.DataFrame(pd.read_csv('./SeoulBikeData.csv'))
+# features = ['Rented Bike Count', 'Wind speed (m/s)']
 
-getOutliers(data, features)
+# getOutliers(data, features)
+# print(len(data))
 
-newData = removeOutliers(data, features)
-getOutliers(newData, features)
+# newData = removeOutliers(data, features)
+
+# getOutliers(newData, features)
+# print(len(newData))
+
 
