@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
@@ -56,10 +57,19 @@ data = data.drop(columns=['Date', 'Dew point temperature', 'Functioning Day'])
 
 
 # One Hot Encode categorical features
-# Hour should be categorical too. Not sure how to handle it yet
 data = pd.get_dummies(data, columns=['Seasons'], dtype=int)
 data = pd.get_dummies(data, columns=['Holiday'], dtype=int, drop_first=True)
 
+# Hour is cyclica. Process Hour with sin and cos
+hour = data['Hour']
+hour_sin = np.sin(2 * np.pi * hour / 24)
+hour_cos = np.cos(2 * np.pi * hour / 24)
+hour = pd.concat([hour_sin, hour_cos], axis=1)
+hour = pd.DataFrame(hour)
+hour.columns = ['hour_sin', 'hour_cos']
+
+data.drop(columns=['Hour'])
+data = pd.concat([data, hour], axis=1)
 
 # getOutliers(data, ['Rented Bike Count', 'Temperature', 'Humidity', 'Wind speed', 'Visibility', 'Solar Radiation', 'Rainfall', 'Snowfall'])
 
@@ -74,8 +84,8 @@ data = removeOutliers(data, ['Rented Bike Count', 'Temperature', 'Humidity', 'Wi
 data = data.reset_index(drop=True)
 
 # Splitting data between categorical and numericals set for standardization
-categorical_features = ['Hour', 'Seasons_Autumn', 'Seasons_Spring', 'Seasons_Summer', 'Seasons_Winter', 'Holiday_No Holiday']
-numerical_features = ['Rented Bike Count', 'Temperature', 'Humidity', 'Wind speed', 'Visibility', 'Solar Radiation', 'Rainfall', 'Snowfall']
+categorical_features = ['Seasons_Autumn', 'Seasons_Spring', 'Seasons_Summer', 'Seasons_Winter', 'Holiday_No Holiday']
+numerical_features = ['Rented Bike Count', 'hour_sin', 'hour_cos', 'Temperature', 'Humidity', 'Wind speed', 'Visibility', 'Solar Radiation', 'Rainfall', 'Snowfall']
 categorical_values = data[categorical_features]
 numerical_values = data[numerical_features]
 
