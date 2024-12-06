@@ -85,16 +85,17 @@ data = data.reset_index(drop=True)
 
 # Splitting data between categorical and numericals set for standardization
 categorical_features = ['Seasons_Autumn', 'Seasons_Spring', 'Seasons_Summer', 'Seasons_Winter', 'Holiday_No Holiday']
-numerical_features = ['Rented Bike Count', 'hour_sin', 'hour_cos', 'Temperature', 'Humidity', 'Wind speed', 'Visibility', 'Solar Radiation', 'Rainfall', 'Snowfall']
+numerical_features = ['hour_sin', 'hour_cos', 'Temperature', 'Humidity', 'Wind speed', 'Visibility', 'Solar Radiation', 'Rainfall', 'Snowfall']
 categorical_values = data[categorical_features]
 numerical_values = data[numerical_features]
+target_values = data['Rented Bike Count']
 
 scaler = StandardScaler()
 numerical_values = scaler.fit_transform(numerical_values)
 numerical_values = pd.DataFrame(numerical_values)
 numerical_values.columns = numerical_features
 
-processed_data = pd.concat([numerical_values, categorical_values], axis=1)
+processed_data = pd.concat([target_values, numerical_values, categorical_values], axis=1)
 print(processed_data)
 
 # Save to a new CSV file
