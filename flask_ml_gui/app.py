@@ -1,12 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, g
 from season_holiday import get_season, is_holiday
 from datetime import datetime
 import pandas as pd
-from model import pipeline
 
 app = Flask(__name__)
-
-best_model = pipeline
 
 @app.route("/")
 def index():
@@ -55,10 +52,11 @@ def predict():
         }
         df = pd.DataFrame(data)
 
-        # Make prediction using your model
-        prediction = best_model.predict(df)  # Assuming a list input
+        prediction = [0]
 
-        print(prediction)
+        from model import pipeline
+        # Make prediction using your model
+        prediction = pipeline.predict(df)  # Assuming a list input
 
         return render_template("result.html", prediction=prediction[0])
 

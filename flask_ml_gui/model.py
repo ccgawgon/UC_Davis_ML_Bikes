@@ -29,7 +29,7 @@ def random_forest(X, y, folds, learning_rate=0.1, n_estimators=30):
         X_train, X_val = X[train_index], X[val_index]
         y_train, y_val = y[train_index], y[val_index]
 
-        gbr = RandomForestRegressor()
+        gbr = RandomForestRegressor(random_state=42)
         gbr.fit(X_train, y_train)
 
         # Predict and evaluate on the validation set
@@ -72,7 +72,7 @@ ct = ColumnTransformer([
     ], remainder='passthrough')
 
 # Train standardizer on correct data
-ct.fit(pd.DataFrame(pd.read_csv('../NoOutlierData.csv')).drop(['Rented Bike Count']))
+ct.fit(pd.DataFrame(pd.read_csv('../NoOutlierData.csv')).drop('Rented Bike Count', axis=1))
 
 hr_transform = HourTransformer()
 
@@ -80,5 +80,6 @@ hr_transform = HourTransformer()
 pipeline = Pipeline([
     ('hour_transform', hr_transform),
     ('scaler', ct),  # Step 1: Standardize the data
+    ('poly', poly),
     ('rf', best_model)  # Step 2: Random Forest model
 ])
