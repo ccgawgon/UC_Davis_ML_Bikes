@@ -2,14 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Machine Learning Classification</title>
+    <title>Machine Learning Average Bike Rental Predictions</title>
 </head>
 <body>
-    <h1>Machine Learning Classification</h1>
-    <form method="POST" action="/predict">
-        <label for="input">Enter data to classify:</label>
-        <input type="text" name="input" id="input" required>
-        <br>
+    <h1>Machine Learning Average Bike Rental Predictions</h1>
+    <p>Enter Data to make a prediction about Average Number of Bikes</p>
+    <input method="POST" action="/predict">
+        <label for="day_hour">Day and Hour:</label><br>
+        <input type="datetime-local" id="day_hour" name="day_hour"><br>
+        <label for="temperature">Temperature (C):</label><br>
+        <input type="number" id="temperature" name="temperature"><br>
+        <label for="humidity">Humidity (%):</label><br>
+        <input type="number" id="humidity" name="humidity"><br>
+        <label for="wind_speed">Wind Speed (m/s):</label><br>
+        <input type="number" id="wind_speed" name="wind_speed"><br>
+        <label for="visibility">Visibility (10m):</label><br>
+        <input type="number" id="visibility" name="visibility"><br>
+        <label for="solar_radiation">Solar Radiation (Mj/m2):</label><br>
+        <input type="number" id="solar_radiation" name="solar_radiation"><br>
+        <label for="rainfall">Rainfall (mm):</label><br>
+        <input type="number" id="rainfall" name="rainfall"><br>
+        <label for="snowfall">Snowfall (cm):</label><br>
+        <input type="number" id="snowfall" name="snowfall"><br>
         <button type="submit">Predict</button>
     </form>
 </body>
