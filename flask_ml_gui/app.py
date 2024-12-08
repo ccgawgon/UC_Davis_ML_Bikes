@@ -1,14 +1,12 @@
 from flask import Flask, render_template, request
-import joblib
 from season_holiday import get_season, is_holiday
 from datetime import datetime
 import pandas as pd
-import sklearn
+from model import pipeline
 
 app = Flask(__name__)
 
-# Load your pre-trained machine learning model here
-model = joblib.load('final_model.pkl')
+best_model = pipeline
 
 @app.route("/")
 def index():
@@ -41,26 +39,28 @@ def predict():
 
         # Create dataframe
         data = {
-            "Hour": day_hour_obj.hour,
-            "Temperature": temperature,
-            "Humidity": humidity,
-            "Wind speed": wind_speed,
-            "Visibility": visibility,
-            "Solar Radiation": solar_radiation,
-            "Rainfall": rainfall,
-            "Snowfall": snowfall,
-            "Seasons_Autumn": season_array[0],
-            "Seasons_Spring": season_array[1],
-            "Seasons_Summer": season_array[2],
-            "Seasons_Winter": season_array[3],
-            "Holiday_No Holiday": has_holiday
+            "Hour": [day_hour_obj.hour],
+            "Temperature": [temperature],
+            "Humidity": [humidity],
+            "Wind speed": [wind_speed],
+            "Visibility": [visibility],
+            "Solar Radiation": [solar_radiation],
+            "Rainfall": [rainfall],
+            "Snowfall": [snowfall],
+            "Seasons_Autumn": [season_array[0]],
+            "Seasons_Spring": [season_array[1]],
+            "Seasons_Summer": [season_array[2]],
+            "Seasons_Winter": [season_array[3]],
+            "Holiday_No Holiday": [has_holiday]
         }
         df = pd.DataFrame(data)
 
         # Make prediction using your model
-        prediction = model.predict(df)  # Assuming a list input
+        prediction = best_model.predict(df)  # Assuming a list input
 
-        return render_template("result.html", prediction=prediction)
+        print(prediction)
+
+        return render_template("result.html", prediction=prediction[0])
 
     else:
         return "Something went wrong. Please try again."
