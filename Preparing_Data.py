@@ -89,6 +89,8 @@ numerical_features = ['hour_sin', 'hour_cos', 'Temperature', 'Humidity', 'Wind s
 categorical_values = data[categorical_features]
 numerical_values = data[numerical_features]
 target_values = data['Rented Bike Count']
+outlier_removed_data = pd.concat([target_values, numerical_values, categorical_values], axis=1)
+outlier_removed_data.to_csv('NoOutlierData.csv', index=False)
 
 scaler = StandardScaler()
 numerical_values = scaler.fit_transform(numerical_values)
