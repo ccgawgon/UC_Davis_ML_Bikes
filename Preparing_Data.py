@@ -76,7 +76,7 @@ data = pd.concat([data, hour], axis=1)
 # It seems like every rainy or snowy days are counted as outliers because the weather is normal most of the time.
 # Therefore, not going to remove outliers for Rainfall and Snowfall
 
-# A lot of outliers for Solar Radiation. We can test this out with our models. For now, not removing outliers for this one
+# A lot of outliers for Solar Radiation. For now, not removing outliers for this one
 
 # Around 150 outliers for Rented Bike Count and Wind Speed. Remove outliers for now
 
